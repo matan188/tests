@@ -361,7 +361,34 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		aTTHelper(arr, start, mid-1, tree);
 		aTTHelper(arr, mid+1, end, tree);
 	}
-
+	
+	public List<LinkedList<Integer>> treeToLL() {
+		LinkedList<Node<Integer>> queue = new LinkedList<Node<Integer>>();
+		List<LinkedList<Integer>> outList = new ArrayList<LinkedList<Integer>>();
+		Node<Integer> curr = (Tree<E>.Node<Integer>) this.root;
+		queue.addLast(curr);
+		LinkedList<Integer> currLL = new LinkedList<Integer>();
+		currLL.add(curr.getVal());
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			outList.add(currLL);
+			currLL = new LinkedList<Integer>();
+			while (size > 0) {
+				curr = queue.removeFirst();
+				size--;
+				if (curr.left != null) {
+					queue.addLast(curr.left);
+					currLL.addLast(curr.left.getVal());
+				}
+				if (curr.right != null) {
+					queue.addLast(curr.right);
+					currLL.addLast(curr.right.getVal());
+				}
+			}
+		}
+		
+		return outList;
+	}
 		
 	public static void main(String[] args) {
 		Tree<Integer> t = new Tree<Integer>();
@@ -375,8 +402,8 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		t.insert(7);
 		Integer[] arr = {1,2,3,4,5,6,7};
 		Tree<Integer> tree = Tree.arrToTree(arr);
-		System.out.println(tree.isBalanced());
-		tree.levelOrderTraversalSpiral();
+		List<LinkedList<Integer>> ll = t.treeToLL();
+		System.out.println(ll);
 		
 		
 		

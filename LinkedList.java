@@ -8,7 +8,7 @@ public class LinkedList {
 	private int size;
 	
 	/* LisNode class */
-	public class ListNode{
+	public static class ListNode{
 		private ListNode next;
 		private Integer val;
 		
@@ -27,12 +27,18 @@ public class LinkedList {
 		}
 	}
 	
+	
+	
 	/**
 	 * Constructs the LinkedList with 0 elements.
 	 */
 	public LinkedList() {
 		this.head = null;
 		this.size = 0;
+	}
+	
+	public LinkedList(ListNode head) {
+		this.head = head;
 	}
 	
 	/**
@@ -319,36 +325,48 @@ public ListNode reverseK(ListNode head, int k) {
 		prev.next = null;
 	}
 	
-	public static LinkedList additionForward(LinkedList first, LinkedList second) {
-		LinkedList result = new LinkedList();
-		return null;
+	public static LinkedList additionBackward(LinkedList first, LinkedList second) {
+		ListNode curr1 = first.head;
+		ListNode curr2 = second.head;
+		LinkedList out = new LinkedList();
+		int rem = 0;
+		while (curr1 != null && curr2 != null) {
+			int sum = curr1.val + curr2.val + rem;
+			int nodeVal = sum % 10;
+			rem = sum / 10;
+			out.addToLast(nodeVal);
+			curr1 = curr1.next;
+			curr2 = curr2.next;
+		}
+		
+		while (curr1 != null) {
+			out.addToLast(curr1.val + rem);
+			rem = 0;
+			curr1 = curr1.next;
+		}
+		
+		while (curr2 != null) {
+			out.addToLast(curr2.val + rem);
+			rem = 0;
+			curr2 = curr2.next;
+		}
+		
+		if (rem == 1) out.addToLast(rem);
+		
+		return out;
 	}
 	
-	private static ListNode addForHelper(ListNode node1, ListNode node2) {
-		return null;
-	}
 	
 	// TESTS
 	public static void main(String[] args) {
-		LinkedList ll = new LinkedList();
-		ll.addToLast(1);
-		ll.addToLast(2);
-		ll.addToLast(3);
-		ll.addToLast(4);
-		ll.addToLast(5);
-		ll.addToLast(6);
-		ll.addToLast(7);
-		ll.addToLast(8);
+		LinkedList a = new LinkedList();
+		LinkedList b = new LinkedList();
 		
-		System.out.println(ll);
-		ll.reverseListIter();
-		System.out.println(ll);
-		ll.reverseListRecursive();
-		System.out.println(ll);
-		ll.reverseRecTrain();
-		System.out.println(ll);
-		ll.reverseListWithStack();
-		System.out.println(ll);
+		a.add(5);
+		a.addToLast(2);
+		a.addToLast(1);
+		b.add(9);
+		System.out.println(additionBackward(a, b));
 		
 	}
 }
