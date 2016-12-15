@@ -2,17 +2,17 @@ package tests;
 
 import java.util.Stack;
 
-public class LinkedList<E extends Integer> {
+public class LinkedList {
 	
-	private ListNode<E> head;
+	private ListNode head;
 	private int size;
 	
 	/* LisNode class */
-	public class ListNode<T>{
-		private ListNode<T> next;
-		private T val;
+	public class ListNode{
+		private ListNode next;
+		private Integer val;
 		
-		public ListNode(T val) {
+		public ListNode(Integer val) {
 			this.val = val;
 			this.next = null;
 		}
@@ -22,7 +22,7 @@ public class LinkedList<E extends Integer> {
 			return this.val.toString();
 		}
 		
-		public T getVal() {
+		public Integer getVal() {
 			return this.val;
 		}
 	}
@@ -41,12 +41,12 @@ public class LinkedList<E extends Integer> {
 	 * @param index
 	 * @return
 	 */
-	public boolean add(E val, int index) {
+	public boolean add(Integer val, int index) {
 		if (index < 0 || index > size) {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		ListNode<E> newNode = new ListNode<E>(val);
+		ListNode newNode = new ListNode(val);
 		
 		if (index == 0) {
 			if (this.head == null) {
@@ -58,12 +58,12 @@ public class LinkedList<E extends Integer> {
 		} else {
 			int currIndex = 1;
 			
-			ListNode<E> currNode = this.head;
+			ListNode currNode = this.head;
 			while (currIndex != index) {
 				currNode = currNode.next;
 				currIndex++;
 			}
-			ListNode<E> nextNode = currNode.next;
+			ListNode nextNode = currNode.next;
 			currNode.next = newNode;
 			newNode.next = nextNode;
 		}
@@ -71,13 +71,13 @@ public class LinkedList<E extends Integer> {
 		return true;
 	}
 	
-	public ListNode<E> getRoot() {
+	public ListNode getRoot() {
 		return this.head;
 	}
 	
-	public ListNode<E> getNthElement (int n) {
+	public ListNode getNthElement (int n) {
 		if (this.head == null) return null;
-		ListNode<E> curr = head;
+		ListNode curr = head;
 		int counter = 0;
 		while (curr != null) {
 			if(counter++ == n) return curr;
@@ -91,11 +91,11 @@ public class LinkedList<E extends Integer> {
 	 * @param val
 	 * @return
 	 */
-	public boolean add(E val) {
+	public boolean add(Integer val) {
 		return this.add(val, 0);
 	}
 	
-	public boolean addToLast(E val) {
+	public boolean addToLast(Integer val) {
 		return this.add(val, this.size);
 	}
 	
@@ -105,7 +105,7 @@ public class LinkedList<E extends Integer> {
 	@Override
 	public String toString() {
 		String out = "";
-		ListNode<E> currNode = this.head;
+		ListNode currNode = this.head;
 		if (this.head == null) {
 			return "->";
 		}
@@ -123,9 +123,9 @@ public class LinkedList<E extends Integer> {
 	 * @param val
 	 * @return true if element's been removed. false if no element with given val was found.
 	 */
-	public boolean removeByVal(E val) {
-		ListNode<E> currNode = this.head;
-		ListNode<E> prev = null;
+	public boolean removeByVal(Integer val) {
+		ListNode currNode = this.head;
+		ListNode prev = null;
 		while (currNode != null) {
 			if (currNode.getVal().equals(val)) {
 				if(currNode == this.head) {
@@ -152,7 +152,7 @@ public class LinkedList<E extends Integer> {
 		if (index < 0 || index >= this.size) {
 			return false;
 		}
-		ListNode<E> currNode = this.head;
+		ListNode currNode = this.head;
 		if (index == 0) {
 			this.head = this.head.next;
 			currNode.next = null;
@@ -163,7 +163,7 @@ public class LinkedList<E extends Integer> {
 				currNode = currNode.next;
 				currInd++;
 			}
-			ListNode<E> toRemove = currNode.next;
+			ListNode toRemove = currNode.next;
 			currNode.next = toRemove.next;
 			toRemove.next = null;
 		}
@@ -197,9 +197,9 @@ public class LinkedList<E extends Integer> {
 	 * Reverses the list with one traversal
 	 */
 	public void reverseListIter() {
-		ListNode<E> curr = this.head;
-		ListNode<E> prev = null;
-		ListNode<E> next = null;
+		ListNode curr = this.head;
+		ListNode prev = null;
+		ListNode next = null;
 		
 		while (curr != null) {
 			next = curr.next;
@@ -211,8 +211,8 @@ public class LinkedList<E extends Integer> {
 	}
 	
 	public void reverseListWithStack() {
-		Stack<ListNode<E>> stack = new Stack<ListNode<E>>();
-		ListNode<E> curr = this.head;
+		Stack<ListNode> stack = new Stack<ListNode>();
+		ListNode curr = this.head;
 		while (curr != null) {
 			stack.push(curr);
 			curr = curr.next;
@@ -240,13 +240,13 @@ public class LinkedList<E extends Integer> {
 	 * @param node
 	 * @return the next of the node in the current method instance
 	 */
-	private void reverseHelper(ListNode<E> node) {
+	private void reverseHelper(ListNode node) {
 		if (node == null) return;
 		if (node.next == null) {
 			this.head = node;
 		} else {
 			this.reverseHelper(node.next);
-			ListNode<E> prevNode = node.next;
+			ListNode prevNode = node.next;
 			prevNode.next = node; 
 			node.next = null;
 		}
@@ -257,23 +257,23 @@ public class LinkedList<E extends Integer> {
 		this.tempHelp(this.head);
 	}
 	
-	private ListNode<E> tempHelp(ListNode<E> node) {
+	private ListNode tempHelp(ListNode node) {
 		if (node == null) return null;
 		if (node.next == null) {
 			this.head.next = null;
 			this.head = node;
 		} else {
-			ListNode<E> newPrev = this.tempHelp(node.next);
+			ListNode newPrev = this.tempHelp(node.next);
 			newPrev.next = node;
 		}
 		return node;
 	}
 
-public ListNode<E> reverseK(ListNode<E> head, int k) {
+public ListNode reverseK(ListNode head, int k) {
 		if (head == null) return null;
-	    ListNode<E> curr = head;
-	    ListNode<E> prev = null;
-	    ListNode<E> next = null;	    
+	    ListNode curr = head;
+	    ListNode prev = null;
+	    ListNode next = null;	    
 
 	    int counter = 0;
         while (counter < k && curr != null) {
@@ -295,10 +295,10 @@ public ListNode<E> reverseK(ListNode<E> head, int k) {
 		
 	}
 	
-	public ListNode<E> nThElement(int n) {
+	public ListNode nThElement(int n) {
 		if (this.head == null) return null;
-		ListNode<E> curr = this.head;
-		ListNode<E> nth = this.head;
+		ListNode curr = this.head;
+		ListNode nth = this.head;
 		int counter = 0;
 		while (curr != null) {
 			if (++counter > n) nth = nth.next;
@@ -307,10 +307,10 @@ public ListNode<E> reverseK(ListNode<E> head, int k) {
 		return nth;
 	}
 	
-	public void deleteNode(ListNode<E> node) {
-		ListNode<E> curr = node;
+	public void deleteNode(ListNode node) {
+		ListNode curr = node;
 		if(curr == null) return;
-		ListNode<E> prev = null;
+		ListNode prev = null;
 		while (curr.next != null) {
 			prev = curr;
 			curr.val = curr.next.val;
@@ -319,18 +319,18 @@ public ListNode<E> reverseK(ListNode<E> head, int k) {
 		prev.next = null;
 	}
 	
-	public static LinkedList<Integer> additionForward(LinkedList<Integer> first, LinkedList<Integer> second) {
-		LinkedList<Integer> result = new LinkedList<Integer>();
+	public static LinkedList additionForward(LinkedList first, LinkedList second) {
+		LinkedList result = new LinkedList();
 		return null;
 	}
 	
-	private static ListNode<E> addForHelper(ListNode<E> node1, ListNode<E> node2) {
+	private static ListNode addForHelper(ListNode node1, ListNode node2) {
 		return null;
 	}
 	
 	// TESTS
 	public static void main(String[] args) {
-		LinkedList<Integer> ll = new LinkedList<Integer>();
+		LinkedList ll = new LinkedList();
 		ll.addToLast(1);
 		ll.addToLast(2);
 		ll.addToLast(3);
