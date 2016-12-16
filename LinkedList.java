@@ -1,5 +1,6 @@
 package tests;
 
+import java.util.PriorityQueue;
 import java.util.Stack;
 
 public class LinkedList {
@@ -362,28 +363,6 @@ public class LinkedList {
 		
 		return out;
 	}
-	
-	public ListNode reverseK(ListNode head, int k) {
-		if (head == null) return null;
-	    ListNode curr = head;
-	    ListNode prev = null;
-	    ListNode next = null;	    
-
-	    int counter = 0;
-        while (counter < k && curr != null) {
-            next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-            counter++;
-        }
-        
-        if (next != null) {
-        	head.next = this.reverseK(next, k);
-        }
-        this.head = prev;
-        return prev;
-	}
 
 	public void removeDup() {
 		if (this.head == null) return;
@@ -463,7 +442,7 @@ public class LinkedList {
 		return curr;
 	}
 	
-	public void reverseKAgain(int k) {
+	public void reverseK(int k) {
 		this.head = this.helpReverseKAgain(this.head, k);
 	}
 	private ListNode helpReverseKAgain(ListNode head, int k){
@@ -485,6 +464,36 @@ public class LinkedList {
 		return prev;
 	}
 	
+	public void reverseKWithStack(int k) {
+		if (k <= 1 || head.next == null) {
+            return;
+        }
+        ListNode[] stack = new ListNode[k];
+        int depth = 0;
+        ListNode node = head.next;
+        ListNode mark = head;
+        int count = 0;
+        while (node != null && count < 12) {
+            ListNode nxt = node.next;
+            stack[depth++] = node;
+            if (depth == k) {
+                while (--depth >= 0 && count < 12) {
+                    mark.next = stack[depth];
+                    mark = mark.next;
+                    count++;
+                    System.out.println(count);
+                }
+                depth = 0;
+            }
+            node = nxt;
+        }
+        if (depth > 0) {
+            mark.next = stack[0];
+        }
+        
+	}
+	
+	
 	// TESTS
 	public static void main(String[] args) {
 		LinkedList a = new LinkedList();
@@ -495,9 +504,7 @@ public class LinkedList {
 		a.addLast(5);
 		a.addLast(6);
 		a.addLast(7);
+		a.reverseKWithStack(3);
 		System.out.println(a);
-		a.reverseKAgain(3);
-		System.out.println(a);
-		
 	}
 }

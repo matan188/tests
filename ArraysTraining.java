@@ -2,6 +2,9 @@ package tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class ArraysTraining {
@@ -181,15 +184,42 @@ public class ArraysTraining {
 		return -1;
 	}
 	
+	public static int longestConsSeq(int[] a) {
+		HashSet<Integer> set = new HashSet<Integer>();
+	    if (a.length == 0) return 0;
+	    
+	    for (int el : a) {
+	        set.add(el);
+	    }
+	    
+	    int maxi = 1;
+	    
+	    for (int val : a) {
+	        int count = 1;
+	        int above = val + 1;
+	        int below = val - 1;
+	        
+	        while (set.contains(above)){
+	            count++;
+	            set.remove(above);
+	            above++;
+	        }
+	        
+	        while (set.contains(below)) {
+	            count++;
+	            set.remove(below);
+	            below--;
+	        }
+	        
+	        maxi = Math.max(maxi, count);
+	    }
+	    return maxi;
+	}
+	
 	public static void main(String[] args) {
 		int[] arr = {50,60,70,4,5,6,7,8,9,10};
-//		quickSort(arr);
-//		System.out.println("sorted");
-//		for (int num : arr) {
-//			System.out.println(num);
-//		}
 		
-		System.out.println(rotatedArrNoRecu(arr, 4));
+		
 		
 		
 	}
