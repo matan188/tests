@@ -105,6 +105,38 @@ public class LinkedList {
 		return this.add(val, this.size);
 	}
 	
+	public boolean addLast(ListNode node) {
+		return this.add(node, this.size);
+	}
+	
+	public boolean add(ListNode node, int index) {
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		ListNode newNode = node;
+		if (index == 0) {
+			if (this.head == null) {
+				this.head = newNode;
+			} else {
+				newNode.next = this.head;
+				this.head = newNode;
+			}
+		} else {
+			int currIndex = 1;
+			
+			ListNode currNode = this.head;
+			while (currIndex != index) {
+				currNode = currNode.next;
+				currIndex++;
+			}
+			ListNode nextNode = currNode.next;
+			currNode.next = newNode;
+//			newNode.next = nextNode;
+		}
+		this.size++;
+		return true;
+	}
+	
 	/**
 	 * Returns a string representation of the list.
 	 */
@@ -287,9 +319,9 @@ public class LinkedList {
 		return nth;
 	}
 	
-	public void deleteNode(ListNode node) {
+	public boolean deleteNode(ListNode node) {
 		ListNode curr = node;
-		if(curr == null) return;
+		if(curr == null || curr.next == null) return false;
 		ListNode prev = null;
 		while (curr.next != null) {
 			prev = curr;
@@ -297,6 +329,7 @@ public class LinkedList {
 			curr = curr.next;
 		}
 		prev.next = null;
+		return true;
 	}
 	
 	public static LinkedList additionBackward(LinkedList first, LinkedList second) {
@@ -373,6 +406,29 @@ public class LinkedList {
 		}
 	}
 	
+	public ListNode findCircleHead() {
+		ListNode slow = this.head;
+		ListNode fast = this.head;
+		
+		if (fast.next == null || fast.next.next == null) return null;
+		slow = slow.next;
+		fast = fast.next.next;
+		while (fast != slow && fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		System.out.println(slow.val);
+		
+		if (fast.next == null || fast.next.next == null) return null;
+		
+		slow = this.head;
+		while (slow != fast) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		return slow;
+	}
+	
 	/**
 	 * Removes duplicate nodes with no buffer in O(n^2)
 	 * @param node
@@ -412,19 +468,13 @@ public class LinkedList {
 	public static void main(String[] args) {
 		LinkedList a = new LinkedList();
 		a.addLast(1);
-		a.addLast(1);
 		a.addLast(2);
 		a.addLast(3);
-		a.addLast(5);
 		a.addLast(4);
-		a.addLast(1);
 		a.addLast(5);
 		a.addLast(6);
-		a.addLast(6);
+		a.addLast(7);
 		System.out.println(a);
-		a.removeDup();
-		System.out.println(a);
-		
 		
 	}
 }
