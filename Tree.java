@@ -14,6 +14,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 	private class Node<T>{
 		private Node<T> left;
 		private Node<T> right;
+		private Node<T> parent;
 		private T val;
 		
 		public Node(T val) {
@@ -59,8 +60,47 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		} else {
 			parent.right = newNode;
 		}
+		newNode.parent = parent;
 		
 		return true;
+	}
+	
+	public Node<E> search(int val) {
+		Node<E> curr = this.root;
+		
+		while (curr != null) {
+			if (val < curr.val) {
+				curr = curr.left;
+			} else if ( val > curr.val){
+				curr = curr.right;
+			} else {
+				return curr;
+			}
+		}
+		return null;
+	}
+	
+	public Node<E> getNextInOrder(int val) {
+		Node<E> node = this.search(val);
+		
+		if (node == null) return null;
+		
+		if (node.right != null) {
+			Node<E> curr = node.right;
+			while (curr.left != null) {
+				curr = curr.left;
+			}
+			return curr;
+		}
+		
+		Node<E> parent = node; 
+		while (parent.parent.left != parent && parent.parent == null) {
+			parent = parent.parent;
+		}
+		
+		if (parent.parent == null) return null;
+		
+		return parent.parent;
 	}
 	
 	/**
@@ -389,6 +429,20 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		
 		return outList;
 	}
+	
+	public Node<E> getPredecessor(int val) {
+		Node<E> curr = this.root;
+		Node<E> pred = null;
+		while (curr != null) {
+			if (val <= curr.getVal()) {
+				curr = curr.left;
+			} else {
+				pred = curr;
+				curr = curr.right;
+			}
+		}
+		return pred;
+	}
 		
 	public static void main(String[] args) {
 		Tree<Integer> t = new Tree<Integer>();
@@ -403,8 +457,9 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		Integer[] arr = {1,2,3,4,5,6,7};
 		Tree<Integer> tree = Tree.arrToTree(arr);
 		List<LinkedList<Integer>> ll = t.treeToLL();
-		System.out.println(ll);
 		
+		System.out.println(t.getNextInOrder(20).getVal());
+		System.out.println(t.getPredecessor(9).getVal());
 		
 		
 		

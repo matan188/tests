@@ -101,7 +101,7 @@ public class LinkedList {
 		return this.add(val, 0);
 	}
 	
-	public boolean addToLast(Integer val) {
+	public boolean addLast(Integer val) {
 		return this.add(val, this.size);
 	}
 	
@@ -274,32 +274,6 @@ public class LinkedList {
 		}
 		return node;
 	}
-
-public ListNode reverseK(ListNode head, int k) {
-		if (head == null) return null;
-	    ListNode curr = head;
-	    ListNode prev = null;
-	    ListNode next = null;	    
-
-	    int counter = 0;
-        while (counter < k && curr != null) {
-            next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-            counter++;
-        }
-        
-        if (next != null) {
-        	head.next = this.reverseK(next, k);
-        }
-        this.head = prev;
-        return prev;
-	}
-
-	public void removeDup() {
-		
-	}
 	
 	public ListNode nThElement(int n) {
 		if (this.head == null) return null;
@@ -334,39 +308,123 @@ public ListNode reverseK(ListNode head, int k) {
 			int sum = curr1.val + curr2.val + rem;
 			int nodeVal = sum % 10;
 			rem = sum / 10;
-			out.addToLast(nodeVal);
+			out.addLast(nodeVal);
 			curr1 = curr1.next;
 			curr2 = curr2.next;
 		}
 		
 		while (curr1 != null) {
-			out.addToLast(curr1.val + rem);
+			out.addLast(curr1.val + rem);
 			rem = 0;
 			curr1 = curr1.next;
 		}
 		
 		while (curr2 != null) {
-			out.addToLast(curr2.val + rem);
+			out.addLast(curr2.val + rem);
 			rem = 0;
 			curr2 = curr2.next;
 		}
 		
-		if (rem == 1) out.addToLast(rem);
+		if (rem == 1) out.addLast(rem);
 		
 		return out;
+	}
+	
+	public ListNode reverseK(ListNode head, int k) {
+		if (head == null) return null;
+	    ListNode curr = head;
+	    ListNode prev = null;
+	    ListNode next = null;	    
+
+	    int counter = 0;
+        while (counter < k && curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            counter++;
+        }
+        
+        if (next != null) {
+        	head.next = this.reverseK(next, k);
+        }
+        this.head = prev;
+        return prev;
+	}
+
+	public void removeDup() {
+		if (this.head == null) return;
+		
+		ListNode prev = this.head;
+		ListNode curr = prev.next;
+		while (curr != null) {
+			ListNode runner = this.head;
+			while (runner != curr) {
+				if (runner.getVal() == curr.getVal()) {
+					prev.next = curr.next;
+					curr.next = null;
+					curr = prev;
+					break;
+				}
+				runner = runner.next;
+			}
+			prev = curr;
+			curr = curr.next;
+		}
+	}
+	
+	/**
+	 * Removes duplicate nodes with no buffer in O(n^2)
+	 * @param node
+	 * @return
+	 */
+	public boolean remove(ListNode node) {
+		ListNode curr = this.head;
+		ListNode prev = null;
+		while (curr != null && curr != node) {
+			prev = curr; 
+			curr = curr.next;
+		}
+		
+		if (curr == null) return false;
+		
+		if (prev == null){
+			this.head = curr.next;
+		} else {
+			prev.next = curr.next;
+		}
+		
+		curr.next = null;
+		return true;
+	}
+	
+	public ListNode getNode(int val) {
+		ListNode curr = this.head;
+		
+		while (curr != null && curr.val != val) {
+			curr = curr.next;
+		}
+		return curr;
 	}
 	
 	
 	// TESTS
 	public static void main(String[] args) {
 		LinkedList a = new LinkedList();
-		LinkedList b = new LinkedList();
+		a.addLast(1);
+		a.addLast(1);
+		a.addLast(2);
+		a.addLast(3);
+		a.addLast(5);
+		a.addLast(4);
+		a.addLast(1);
+		a.addLast(5);
+		a.addLast(6);
+		a.addLast(6);
+		System.out.println(a);
+		a.removeDup();
+		System.out.println(a);
 		
-		a.add(5);
-		a.addToLast(2);
-		a.addToLast(1);
-		b.add(9);
-		System.out.println(additionBackward(a, b));
 		
 	}
 }
