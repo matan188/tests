@@ -463,6 +463,27 @@ public class LinkedList {
 		return curr;
 	}
 	
+	public void reverseKAgain(int k) {
+		this.head = this.helpReverseKAgain(this.head, k);
+	}
+	private ListNode helpReverseKAgain(ListNode head, int k){
+		ListNode curr = head;
+		ListNode prev = null;
+		ListNode next = null;
+		int counter = 0;
+		while (curr != null && counter < k) {
+			counter++;
+			next = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+		}
+		
+		if (curr != null) {
+			head.next = this.helpReverseKAgain(curr, k);
+		}
+		return prev;
+	}
 	
 	// TESTS
 	public static void main(String[] args) {
@@ -474,6 +495,8 @@ public class LinkedList {
 		a.addLast(5);
 		a.addLast(6);
 		a.addLast(7);
+		System.out.println(a);
+		a.reverseKAgain(3);
 		System.out.println(a);
 		
 	}
