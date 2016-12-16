@@ -155,6 +155,32 @@ public class ArraysTraining {
 
 	}
 	
+	public static int rotatedArrNoRecu(int[] arr, int val) {
+		int start = 0;
+		int end = arr.length - 1;
+		if (end < 0) return -1;
+		int mid = (end - start)/2 + start;
+		while (start <= end) {
+			System.out.print("here");
+			if (val < arr[mid]) {
+				if (val >= arr[start]) {
+					end = mid - 1;
+				} else {
+					start = mid + 1;
+				}
+			} else if (val > arr[mid]) {
+				if (val <= arr[end]) {
+					start = mid + 1;
+				} else {
+					end = mid - 1;
+				}
+			} else {
+				return mid;
+			}
+		}
+		return -1;
+	}
+	
 	public static void main(String[] args) {
 		int[] arr = {4,5,6,1,2};
 //		quickSort(arr);
@@ -163,6 +189,13 @@ public class ArraysTraining {
 //			System.out.println(num);
 //		}
 		
+		System.out.println(rotatedArrNoRecu(arr, 1));
+		System.out.println(rotatedArrNoRecu(arr, 2));
+		System.out.println(rotatedArrNoRecu(arr, 3));
+		System.out.println(rotatedArrNoRecu(arr, 4));
+		System.out.println(rotatedArrNoRecu(arr, 5));
+		System.out.println(rotatedArrNoRecu(arr, 6));
+		System.out.println();
 		System.out.println(rotatedSearch(arr, 1));
 		System.out.println(rotatedSearch(arr, 2));
 		System.out.println(rotatedSearch(arr, 3));

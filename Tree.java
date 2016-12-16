@@ -303,30 +303,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		}
 	}
 	
-	public void morrisTraversal() {
-		Node<E> curr = this.root;
-		Node<E> pred;
-		
-		while (curr != null) {
-			if (curr.left == null) {
-				System.out.println(curr.getVal());
-				curr = curr.right;
-			} else {
-				pred = curr.left;
-				while (pred.right != null && pred.right != curr) {
-					pred = pred.right;
-				}
-				if (pred.right == null) {
-					pred.right = curr;
-					curr = curr.left;
-				} else {
-					pred.right = null;
-					System.out.println(curr.getVal());
-					curr = curr.right;
-				}
-			}
-		}
-	}
+	
 	
 	public void levelOrderTraversalSpiral() {
 		ArrayDeque<Node<E>> queue = new ArrayDeque<Node<E>>();
@@ -387,7 +364,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		return Math.min(this.minDepth(node.left), this.minDepth(node.right)) + 1;
 	}
 	
-	public static Tree<Integer> arrToTree(Integer[] arr) {
+	public static Tree<Integer> sortedArrToBalTree(Integer[] arr) {
 		Tree<Integer> tree = new Tree<Integer>();
 		aTTHelper(arr, 0, arr.length - 1, tree);
 		return tree;
@@ -443,6 +420,77 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		}
 		return pred;
 	}
+	
+	/**
+	 * Morris Traversal. In-order with no recursion and no stack.
+	 */
+	public void morrisTraversal() {
+		Node<E> curr = this.root;
+		Node<E> pred;
+		
+		while (curr != null) {
+			if (curr.left == null) {
+				System.out.println(curr.getVal());
+				curr = curr.right;
+			} else {
+				pred = curr.left;
+				while (pred.right != null && pred.right != curr) {
+					pred = pred.right;
+				}
+				if (pred.right == null) {
+					pred.right = curr;
+					curr = curr.left;
+				} else {
+					pred.right = null;
+					System.out.println(curr.getVal());
+					curr = curr.right;
+				}
+			}
+		}
+	}
+	
+	public String treeToString() {
+		if (this.root == null) return "";
+		StringBuilder out = new StringBuilder();
+		this.tTSHelper(root, out);
+		return new String(out);
+	}
+	
+	private void tTSHelper(Node<E> node, StringBuilder out) {
+		if (node != null) {
+			out.append(node.getVal().toString() + ",");
+			this.tTSHelper(node.left, out);
+			this.tTSHelper(node.right, out);
+		}
+	}
+	
+	public static Tree<Integer> stringToTree(String str) {
+		String[] arr = str.split(",");
+		Tree<Integer> tree = new Tree<Integer>();
+		for (String val : arr) {
+			tree.insert(Integer.parseInt(val));
+		}
+		return tree;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Tree) {
+			return equalsHelper(this.root, ((Tree<E>) obj).root);
+		}
+		return false;
+	}
+	
+	private boolean equalsHelper(Node<E> a, Node<E> b) {
+		if (a == null && b == null) return true;
+		if (a != null && b != null) {
+			boolean left = this.equalsHelper(a.left, b.left);
+			boolean right = this.equalsHelper(a.right, b.right);
+			return (a.getVal() == b.getVal()) && (right == left);
+		}
+		return false;
+		
+	}
 		
 	public static void main(String[] args) {
 		Tree<Integer> t = new Tree<Integer>();
@@ -454,13 +502,19 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		t.insert(5);
 		t.insert(2);
 		t.insert(7);
-		Integer[] arr = {1,2,3,4,5,6,7};
-		Tree<Integer> tree = Tree.arrToTree(arr);
-		List<LinkedList<Integer>> ll = t.treeToLL();
-		
-		System.out.println(t.getNextInOrder(20).getVal());
-		System.out.println(t.getPredecessor(9).getVal());
-		
+		Tree<Integer> c = new Tree<Integer>();
+		c.insert(10);
+		c.insert(9);
+		c.insert(20);
+		c.insert(25);
+		c.insert(15);
+		c.insert(5);
+		c.insert(2);
+		c.insert(7);
+		String strTree = t.treeToString();
+		System.out.println(strTree);
+		Tree<Integer> b = stringToTree(strTree);
+		System.out.println(t.equals(b));
 		
 		
 		
