@@ -466,6 +466,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 	
 	public static Tree<Integer> stringToTree(String str) {
 		String[] arr = str.split(",");
+		for (String s : arr) System.out.print(s + " ");
 		Tree<Integer> tree = new Tree<Integer>();
 		for (String val : arr) {
 			tree.insert(Integer.parseInt(val));
