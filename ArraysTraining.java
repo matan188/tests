@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.SplittableRandom;
 
 public class ArraysTraining {
 	
@@ -216,8 +217,56 @@ public class ArraysTraining {
 	    return maxi;
 	}
 	
+	public static List<ArrayList<Integer>> spiralMatrixToNSquare(int n) {
+		List<ArrayList<Integer>> out = new ArrayList<ArrayList<Integer>>();
+		
+		for (int i = 0; i < n; i++) {
+			ArrayList<Integer> row = new ArrayList<Integer>();
+			for (int j = 0; j < n; j++) {
+				row.add(0);
+			}
+			out.add(row);
+		}
+		
+		int top = 0, left = 0, right = n, bottom = n;
+		int ind = 1;
+		while (ind <= Math.pow(n, 2.0)) {
+			for (int a = left; a < right; a++) {
+				out.get(top).set(a, ind);
+				ind++;
+			}
+			top++;
+			
+			for (int b = top; b < bottom; b++) {
+				out.get(b).set(right-1, ind);
+				ind++;
+			}
+			right--;
+			
+			for (int c = right-1; c >= left; c--) {
+				out.get(bottom-1).set(c, ind);
+				ind++;
+			}
+			bottom--;
+			
+			for (int d = bottom-1; d >= top; d--) {
+				out.get(d).set(left, ind);
+				ind++;
+			}
+			left++;
+		}
+		
+		
+		
+		
+		return out;
+	}
+	
 	public static void main(String[] args) {
-		int[] arr = {50,60,70,4,5,6,7,8,9,10};
+		List<ArrayList<Integer>> spiralMatrix = spiralMatrixToNSquare(21);
+		for (ArrayList<Integer> row : spiralMatrix) {
+			System.out.println(row);
+		}
 		
 		
 		
