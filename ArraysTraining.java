@@ -304,13 +304,79 @@ public class ArraysTraining {
 		return out.toString();
 	}
 	
+	public static void sortSeq(ArrayList<Integer> arr, int start, int end) {
+		int n = arr.size();
+		if (end - start == 1) {
+			swap(arr, start, end); 
+			return;
+		}
+		for (int j = 0; j < end - start-1; j++) {
+			swap(arr, j + start, end - j);
+		}
+	}
+	
+	public static void swap (ArrayList<Integer> arr, int indA, int indB) {
+		int temp = arr.get(indA);
+		arr.set(indA, arr.get(indB));
+		arr.set(indB, temp);
+	}
+	
+	public static void nextPerm(ArrayList<Integer> arr) {
+		int n = arr.size();
+		int sufStart = 0;
+		int limitVal;
+		int endSeq = n-1;
+		for (int i = n-2; i >= 0; i--) {
+			
+			if (arr.get(i) < arr.get(i+1)) {
+				sufStart = i+1;
+				limitVal = arr.get(i);
+				for (int j = i+1; j < n; j++) {
+					if (arr.get(j) < limitVal) {
+						endSeq = j-1;
+						break;
+					}
+				}
+				swap(arr, i, endSeq);
+				System.out.println(arr);
+				System.out.println(sufStart + " " + (n-1));
+				sortSeq(arr, sufStart, n-1);
+				return;
+			}
+		}
+		sortSeq(arr, 0, n-1);
+	}
+	
 	public static void main(String[] args) {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
-		arr.add(0);
-		arr.add(0);
-		arr.add(0);
-		arr.add(0);
+		arr.add(319);
+		arr.add(695);
+		arr.add(52);
+		System.out.println(arr);
+		nextPerm(arr);
+		System.out.println(arr);
 		
-		System.out.println(sortToLargestNumber(arr));
+		arr.clear();
+		arr.add(1);
+		arr.add(2);
+		arr.add(3);
+		arr.add(4);
+		arr.add(5);
+		arr.add(6);
+		System.out.println(arr);
+		sortSeq(arr, 0,3);
+		System.out.println(arr);
+//		
+//		arr.clear();
+//		arr.add(1);
+//		arr.add(2);
+//		arr.add(4);
+//		arr.add(7);
+//		arr.add(6);
+//		arr.add(3);
+//		System.out.println(arr);
+//		nextPerm(arr);
+//		System.out.println(arr);
+		
 	}
 }
