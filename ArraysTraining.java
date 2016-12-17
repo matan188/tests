@@ -2,6 +2,8 @@ package tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -262,14 +264,53 @@ public class ArraysTraining {
 		return out;
 	}
 	
-	public static void main(String[] args) {
-		List<ArrayList<Integer>> spiralMatrix = spiralMatrixToNSquare(21);
-		for (ArrayList<Integer> row : spiralMatrix) {
-			System.out.println(row);
+	public static class NumCompare implements Comparator<String>{
+
+		@Override
+		public int compare(String o1, String o2) {
+			if (Integer.parseInt(o1 + o2) > Integer.parseInt(o2 + o1)) {
+				return 1; 
+			} else if (Integer.parseInt(o1 + o2) < Integer.parseInt(o2 + o1)) {
+				return -1;
+			}
+			return 0;
+		}
+	}
+	
+	/**
+	 * Receives a list of integers and finds a way to organize them so they form the largest number.
+	 * ex: [3,30,9,93] result = "994330"
+	 * @param arr
+	 * @return
+	 */
+	public static String sortToLargestNumber(ArrayList<Integer> arr) {
+		ArrayList<String> sArr = new ArrayList<String>();
+		for (Integer val : arr) {
+			sArr.add(val.toString());
+		}
+		Collections.sort(sArr, Collections.reverseOrder(new NumCompare()));
+		
+		StringBuilder out = new StringBuilder();
+		for (String s: sArr) {
+			out.append(s);
 		}
 		
+		int counter =0;
+		int len = out.length();
+		while (counter < len-1 && out.charAt(0)== '0') {
+			out.deleteCharAt(0);
+			counter++;
+		}
+		return out.toString();
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(0);
+		arr.add(0);
+		arr.add(0);
+		arr.add(0);
 		
-		
-		
+		System.out.println(sortToLargestNumber(arr));
 	}
 }
