@@ -347,16 +347,25 @@ public class ArraysTraining {
 		sortSeq(arr, 0, n-1);
 	}
 	
+	public static void reversePartOfList(ArrayList<Integer> arr, int start, int end) {
+		for (int j = 0; j < (end - start +1)/2; j++) {
+			swap(arr, j + start, end-j);
+		}
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
-		arr.add(319);
-		arr.add(695);
-		arr.add(52);
-		System.out.println(arr);
-		nextPerm(arr);
-		System.out.println(arr);
+//		arr.add(319);
+//		arr.add(695);
+//		arr.add(52);
+//		System.out.println(arr);
+//		nextPerm(arr);
+//		System.out.println(arr);
 		
 		arr.clear();
+		arr.add(0);
 		arr.add(1);
 		arr.add(2);
 		arr.add(3);
@@ -364,19 +373,7 @@ public class ArraysTraining {
 		arr.add(5);
 		arr.add(6);
 		System.out.println(arr);
-		sortSeq(arr, 0,3);
+		reversePartOfList(arr, 2,5);
 		System.out.println(arr);
-//		
-//		arr.clear();
-//		arr.add(1);
-//		arr.add(2);
-//		arr.add(4);
-//		arr.add(7);
-//		arr.add(6);
-//		arr.add(3);
-//		System.out.println(arr);
-//		nextPerm(arr);
-//		System.out.println(arr);
-		
 	}
 }
