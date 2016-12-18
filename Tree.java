@@ -492,6 +492,22 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		return false;
 		
 	}
+	
+	public void stackTraversal() {
+		Stack<Node<E>> stack = new Stack<Node<E>>();
+		Node<E> curr = this.root;
+		while (!stack.isEmpty() || curr != null) {
+			if (curr != null) {
+				System.out.println(curr.val);
+				stack.push(curr);
+				curr = curr.left;
+			} else {
+				curr = stack.pop();
+				
+				curr = curr.right;
+			}
+		}
+	}
 		
 	public static void main(String[] args) {
 		Tree<Integer> t = new Tree<Integer>();
@@ -503,19 +519,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		t.insert(5);
 		t.insert(2);
 		t.insert(7);
-		Tree<Integer> c = new Tree<Integer>();
-		c.insert(10);
-		c.insert(9);
-		c.insert(20);
-		c.insert(25);
-		c.insert(15);
-		c.insert(5);
-		c.insert(2);
-		c.insert(7);
-		String strTree = t.treeToString();
-		System.out.println(strTree);
-		Tree<Integer> b = stringToTree(strTree);
-		System.out.println(t.equals(b));
+		t.stackTraversal();
 		
 		
 		
