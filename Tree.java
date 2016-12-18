@@ -1,6 +1,7 @@
 package tests;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 import org.apache.log4j.chainsaw.Main;
@@ -229,7 +230,6 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
         Stack<Node<E>> rightPath = this.pathToMax();
         Node<E> low = leftPath.pop();
         Node<E> high = rightPath.pop();
-        System.out.println("low " + low.val + " high " + high.val);
         
         while (low != high) {
             int sum = low.val + high.val;
@@ -466,7 +466,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 	
 	public static Tree<Integer> stringToTree(String str) {
 		String[] arr = str.split(",");
-		for (String s : arr) System.out.print(s + " ");
+//		for (String s : arr) System.out.print(s + " ");
 		Tree<Integer> tree = new Tree<Integer>();
 		for (String val : arr) {
 			tree.insert(Integer.parseInt(val));
@@ -487,7 +487,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		if (a != null && b != null) {
 			boolean left = this.equalsHelper(a.left, b.left);
 			boolean right = this.equalsHelper(a.right, b.right);
-			return (a.getVal() == b.getVal()) && (right == left);
+			return (a.getVal() == b.getVal()) && right && left;
 		}
 		return false;
 		
@@ -498,14 +498,161 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		Node<E> curr = this.root;
 		while (!stack.isEmpty() || curr != null) {
 			if (curr != null) {
-				System.out.println(curr.val);
 				stack.push(curr);
 				curr = curr.left;
 			} else {
 				curr = stack.pop();
-				
+				System.out.println(curr.val);
 				curr = curr.right;
 			}
+		}
+	}
+	
+	public boolean twoSumTest(int k) {
+		Node<E> low = this.root;
+		Stack<Node<E>> leftPath = new Stack<Node<E>>();
+		while (low.left != null) {
+			leftPath.push(low);
+			low = low.left;
+		}
+		
+		Node<E> high = this.root;
+		Stack<Node<E>> rightPath = new Stack<Node<E>>();
+		while (high.right != null) {
+			rightPath.push(high);
+			high = high.right;
+		}
+		
+		while (low != high) {
+			int sum = low.getVal() + high.getVal();  
+			if (sum == k) {
+				return true;
+			} else if (sum < k) {
+				if (low.right != null) {
+					low = low.right;
+					while(low.left != null) {
+						leftPath.push(low);
+						low = low.left;
+					}
+				} else {
+					low = leftPath.pop();
+				}
+			} else {
+				if (high.left != null) {
+					high = high.left;
+					while (high.right != null) {
+						rightPath.push(high);
+						high = high.right;
+					}
+				} else {
+					high = rightPath.pop();
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void findSumPath(int sum) {
+		ArrayList<Integer> buffer = new ArrayList<Integer>();
+		this.findSumPathHelp(this.root, 5, buffer, 0);
+	}
+	
+	private void findSumPathHelp(Node<E> head, int sum, ArrayList<Integer> buffer, int level) {
+		if (head == null) return;
+		int tmp = sum; 
+		buffer.add(head.getVal());
+		for (int i = level; i >=1 ; i--) {
+			tmp -= buffer.get(i);
+			if (tmp == 0) this.toPrint();
+		}
+		ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
+		ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
+		this.findSumPathHelp(head.left, sum, c1, level+1);
+		this.findSumPathHelp(head.left, sum, c2, level+1);
+	}
+	
+	private void print(ArrayList<Integer> buffer, int level, int i2) {
+		for (int i = level; i < i2; i++) {
+			System.out.println(buffer.get(i) + " ");
+		}
+		System.out.println();
+	}
+	
+	public void levelSpiralTest() {
+		LinkedList<Node<E>> LL = new LinkedList<Node<E>>();
+		LL.add(this.root);
+		boolean ltr = true;
+		while (!LL.isEmpty()) {
+			int size = LL.size();
+			while (size > 0) {
+				size--;
+				Node<E> curr = null;
+				if (ltr) {
+					curr = LL.removeLast();
+					if (curr.left != null) {
+						LL.addFirst(curr.left);
+					}
+					if (curr.right != null) {
+						LL.addFirst(curr.right);
+					}
+				} else {
+					curr= LL.removeFirst();
+					if (curr.right != null) {
+						LL.addLast(curr.right);
+					}
+					if (curr.left != null) {
+						LL.addLast(curr.left);
+					}
+				}
+				System.out.print(curr.val + " ");
+			}
+			System.out.println();
+			if (ltr) ltr = false;
+			else ltr = true;
+		}
+	}
+	
+	public void insertBinaryTree(E val) {
+		if (this.root == null) {
+			this.root = new Node<E>(val);
+			return;
+		}
+		Queue<Node<E>> queue = new LinkedList<Node<E>>();
+		queue.add(this.root);
+		while (!queue.isEmpty()) {
+			Node<E> curr = queue.poll();
+			if (curr.left == null) {
+				curr.left = new Node<E>(val);
+				return;
+			}
+			if (curr.right == null) {
+				curr.right = new Node<E>(val);
+				return;
+			}
+			queue.add(curr.left);
+			queue.add(curr.right);
+		}
+		
+	}
+	
+	public void levelOrder() {
+		if (this.root == null) return;
+		Queue<Node<E>> queue = new LinkedList<Node<E>>();
+		queue.add(this.root);
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			while (size > 0) {
+				Node<E> curr = queue.poll();
+				size--;
+				System.out.print(curr.val + " ");
+				if (curr.left != null) {
+					queue.add(curr.left);
+				}
+				if (curr.right != null) {
+					queue.add(curr.right);
+				}
+			}
+			System.out.println();
 		}
 	}
 		
@@ -519,10 +666,12 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		t.insert(5);
 		t.insert(2);
 		t.insert(7);
-		t.stackTraversal();
 		
 		
-		
+		t.levelOrder();
+//		t.levelSpiralTest();
+//		t.levelOrderTraversalSpiral();
+				
 	}
 
 }

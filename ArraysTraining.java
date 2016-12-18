@@ -355,6 +355,30 @@ public class ArraysTraining {
 		
 	}
 	
+	/**
+	 * Prints the Kth row of pascal 
+	 * [1], [1,1], [1,2,1], [1,3,3,1], [1,4,6,4,1]...
+	 * @param k
+	 */
+	public static void pascalTriangle(int n) {
+		ArrayList<Integer> out = new ArrayList<Integer>();
+		out.add(1);
+		
+		for (int k = 0; k < n; k++) {
+			int prev = 1;
+			for(int j = 1; j < k+1; j++) {
+				int tmp = out.get(j);
+				out.set(j, out.get(j)+prev);
+				prev = tmp;
+			}
+			out.add(1);
+		}
+		
+		System.out.println(out);
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 //		arr.add(319);
@@ -364,16 +388,5 @@ public class ArraysTraining {
 //		nextPerm(arr);
 //		System.out.println(arr);
 		
-		arr.clear();
-		arr.add(0);
-		arr.add(1);
-		arr.add(2);
-		arr.add(3);
-		arr.add(4);
-		arr.add(5);
-		arr.add(6);
-		System.out.println(arr);
-		reversePartOfList(arr, 2,5);
-		System.out.println(arr);
 	}
 }
