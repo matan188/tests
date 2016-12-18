@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.SplittableRandom;
 
@@ -379,14 +381,78 @@ public class ArraysTraining {
 		
 	}
 	
+	public static int mostFrquent(int[] arr) {
+		HashMap<Integer, Integer> elFreq = new HashMap<Integer, Integer>();
+		int maxVal = Integer.MIN_VALUE;
+		int maxFreq = 0;
+		
+		for (int val : arr) {
+			if (elFreq.containsKey(val)) {
+				elFreq.put(val, elFreq.get(val) + 1);
+			} else {
+				elFreq.put(val, 1);
+			}
+			int freq = elFreq.get(val); 
+			if (freq > maxFreq) {
+				maxVal = val;
+				maxFreq = freq;
+			} else if (freq == maxFreq) {
+				if (val < maxVal) {
+					maxVal = val;
+				}
+			}
+		}
+		
+		return maxVal;
+	}
+	
+	public static void rotateMatrix(int[][] mat) {
+		int n = mat.length;
+		if (n > 0) {
+			if (n != mat[0].length) return;
+		}
+		
+		for (int level = 0; level < n/2; level++) {
+			int first = level;
+			int last = n - 1 - level;
+			
+			for (int i = first; i < last; i++) {
+				int offset = i -first;
+				int top = mat[first][i];
+				mat[first][i] = mat[last-offset][first];
+				mat[last-offset][first] = mat[last][last-offset];
+				mat[last][last-offset] = mat[i][last];
+				mat[i][last] = top;
+			}
+		}
+		
+	}
+	
 	public static void main(String[] args) {
-		ArrayList<Integer> arr = new ArrayList<Integer>();
-//		arr.add(319);
-//		arr.add(695);
-//		arr.add(52);
-//		System.out.println(arr);
-//		nextPerm(arr);
-//		System.out.println(arr);
+		int [][] arr = new int[5][5];
+		int c = 1;
+		for (int i = 0; i <5; i++) {
+			for (int j = 0; j < 5; j++) {
+				arr[i][j] = c;
+				c++;
+			}
+		}
+		for(int[] row : arr) {
+			System.out.print("[");
+			for (int el : row) {
+				System.out.print(el + " " );
+			}
+			System.out.println("]");
+		}
+		System.out.println("---");
+		rotateMatrix(arr);
+		for(int[] row : arr) {
+			System.out.print("[");
+			for (int el : row) {
+				System.out.print(el + " " );
+			}
+			System.out.println("]");
+		}
 		
 	}
 }
