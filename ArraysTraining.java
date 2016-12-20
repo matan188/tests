@@ -428,31 +428,26 @@ public class ArraysTraining {
 		
 	}
 	
+	public static void printCombs(String[][] lists, int depth, String out) {
+		if (depth == lists.length) {
+			System.out.println(out);
+			return;
+		}
+		
+		for (int i = 0; i < lists[depth].length; i++) {
+			printCombs(lists, depth +1, out + lists[depth][i] + " ");
+		}
+	}
+	
 	public static void main(String[] args) {
-		int [][] arr = new int[5][5];
-		int c = 1;
-		for (int i = 0; i <5; i++) {
-			for (int j = 0; j < 5; j++) {
-				arr[i][j] = c;
-				c++;
-			}
-		}
-		for(int[] row : arr) {
-			System.out.print("[");
-			for (int el : row) {
-				System.out.print(el + " " );
-			}
-			System.out.println("]");
-		}
-		System.out.println("---");
-		rotateMatrix(arr);
-		for(int[] row : arr) {
-			System.out.print("[");
-			for (int el : row) {
-				System.out.print(el + " " );
-			}
-			System.out.println("]");
-		}
+		List<Integer> l = new ArrayList<Integer>();
+		String[] speed = {"quick", "slow"};
+		String[] color = {"red", "blue"};
+		String[] animal = {"cat", "dog", "fox"};
+		String[][] arr = {speed, color, animal};
+		
+		
+		printCombs(arr, 0, "");
 		
 	}
 }

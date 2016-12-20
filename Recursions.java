@@ -54,6 +54,8 @@ public class Recursions {
 			combHelp(str, out, i+1, memo);
 			out.setLength(out.length()-1);
 		}
+		
+		
 		out.append(str.charAt(str.length()-1));
 		String s = new String(out);
 		if (!memo.contains(s)) {

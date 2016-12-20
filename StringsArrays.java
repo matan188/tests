@@ -55,10 +55,27 @@ public class StringsArrays {
 		
 	}
 	
+	public static void combinations(String str) {
+		StringBuilder sb = new StringBuilder();
+		combHelp(str, 0, sb);
+	}
+	
+	public static void combHelp(String str, int ind, StringBuilder sb) {
+		for (int i= ind; i < str.length(); i++) {
+			sb.append(str.charAt(i));
+			
+			System.out.println(sb);
+			if (i < str.length()) {
+				combHelp (str, i+1, sb);
+			}
+			sb.setLength(sb.length()-1);
+		}
+	}
+	
 	public static void main(String[] args) {
 		String s = "Good morning lads";
 		char[] arr = null;
 		
-		System.out.println(replaceSpaces(arr));
+		combinations("abc");
 	}
 }

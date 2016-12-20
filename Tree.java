@@ -568,7 +568,7 @@ public class Tree<E extends Integer/*Comparable<E>*/> {
 		ArrayList<Integer> c1 = (ArrayList<Integer>) buffer.clone();
 		ArrayList<Integer> c2 = (ArrayList<Integer>) buffer.clone();
 		this.findSumPathHelp(head.left, sum, c1, level+1);
-		this.findSumPathHelp(head.left, sum, c2, level+1);
+		this.findSumPathHelp(head.right, sum, c2, level+1);
 	}
 	
 	private void print(ArrayList<Integer> buffer, int level, int i2) {
